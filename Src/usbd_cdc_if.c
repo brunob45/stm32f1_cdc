@@ -287,13 +287,13 @@ static int8_t CDC_Receive_FS(uint8_t* Buf, uint32_t *Len)
 #ifdef DTR_TOGGLING_SEQ
   if (dtr_toggling > 3) {
     dtr_togglingHook(Buf, Len);
-    dtr_toggling = 0;
   }
+  dtr_toggling = 0;
 #endif
 
   USBD_CDC_SetRxBuffer(&hUsbDeviceFS, Buf);
   USBD_CDC_ReceivePacket(&hUsbDeviceFS);
-  CDC_Transmit_FS(Buf, 1);
+  CDC_Transmit_FS(Buf, *Len);
   return (USBD_OK);
   /* USER CODE END 6 */
 }
