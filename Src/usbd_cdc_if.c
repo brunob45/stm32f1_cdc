@@ -132,7 +132,11 @@ static int8_t CDC_Control_FS(uint8_t cmd, uint8_t* pbuf, uint16_t length);
 static int8_t CDC_Receive_FS(uint8_t* pbuf, uint32_t *Len);
 
 /* USER CODE BEGIN PRIVATE_FUNCTIONS_DECLARATION */
-
+#ifdef DTR_TOGGLING_SEQ
+  /* DTR toggling sequence management */
+  extern void dtr_togglingHook(uint8_t *buf, uint32_t *len);
+  uint8_t dtr_toggling = 0;
+#endif
 /* USER CODE END PRIVATE_FUNCTIONS_DECLARATION */
 
 /**
@@ -231,7 +235,9 @@ static int8_t CDC_Control_FS(uint8_t cmd, uint8_t* pbuf, uint16_t length)
     break;
 
     case CDC_SET_CONTROL_LINE_STATE:
-
+#ifdef DTR_TOGGLING_SEQ
+      dtr_toggling++; /* Count DTR toggling */
+#endif
     break;
 
     case CDC_SEND_BREAK:
@@ -263,6 +269,13 @@ static int8_t CDC_Control_FS(uint8_t cmd, uint8_t* pbuf, uint16_t length)
 static int8_t CDC_Receive_FS(uint8_t* Buf, uint32_t *Len)
 {
   /* USER CODE BEGIN 6 */
+#ifdef DTR_TOGGLING_SEQ
+  if (dtr_toggling > 3) {
+    dtr_togglingHook(Buf, Len);
+    dtr_toggling = 0;
+  }
+#endif
+
   USBD_CDC_SetRxBuffer(&hUsbDeviceFS, Buf);
   USBD_CDC_ReceivePacket(&hUsbDeviceFS);
   CDC_Transmit_FS(Buf, 1);
