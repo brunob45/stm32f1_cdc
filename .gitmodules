@@ -1,0 +1,3 @@
+[submodule "STM32_HID_Bootloader"]
+	path = STM32_HID_Bootloader
+	url = git@github.com:Serasidis/STM32_HID_Bootloader.git
