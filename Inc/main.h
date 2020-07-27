@@ -71,6 +71,8 @@ void Error_Handler(void);
 /* Private defines -----------------------------------------------------------*/
 #define BUILTIN_LED_Pin LL_GPIO_PIN_13
 #define BUILTIN_LED_GPIO_Port GPIOC
+#define BOOT1_Pin LL_GPIO_PIN_2
+#define BOOT1_GPIO_Port GPIOB
 /* USER CODE BEGIN Private defines */
 
 /* USER CODE END Private defines */
