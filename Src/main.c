@@ -101,6 +101,10 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
+    HAL_Delay(500);
+    LL_GPIO_ResetOutputPin(BUILTIN_LED_GPIO_Port, BUILTIN_LED_Pin);
+    HAL_Delay(500);
+    LL_GPIO_SetOutputPin(BUILTIN_LED_GPIO_Port, BUILTIN_LED_Pin);
   }
   /* USER CODE END 3 */
 }
