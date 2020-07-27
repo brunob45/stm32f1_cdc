@@ -35,7 +35,7 @@ void MX_RTC_Init(void)
   /* Peripheral clock enable */
   LL_RCC_EnableRTC();
 
-  /** Initialize RTC and set the Time and Date 
+  /** Initialize RTC and set the Time and Date
   */
   RTC_InitStruct.AsynchPrescaler = 0xFFFFFFFFU;
   LL_RTC_Init(RTC, &RTC_InitStruct);
