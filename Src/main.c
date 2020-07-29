@@ -92,7 +92,7 @@ int main(void)
   MX_RTC_Init();
   MX_TIM2_Init();
   /* USER CODE BEGIN 2 */
-
+  HAL_TIM_OC_Start_IT(&htim2, TIM_CHANNEL_1);
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -102,10 +102,6 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-    LL_mDelay(500);
-    LL_GPIO_ResetOutputPin(BUILTIN_LED_GPIO_Port, BUILTIN_LED_Pin);
-    LL_mDelay(500);
-    LL_GPIO_SetOutputPin(BUILTIN_LED_GPIO_Port, BUILTIN_LED_Pin);
   }
   /* USER CODE END 3 */
 }
@@ -158,7 +154,16 @@ void SystemClock_Config(void)
 }
 
 /* USER CODE BEGIN 4 */
-
+void HAL_TIM_OC_DelayElapsedCallback(TIM_HandleTypeDef* htim)
+{
+  static uint8_t pinOutputHigh;
+  htim->Instance->CCR1 += 62500;
+  if (pinOutputHigh)
+    LL_GPIO_ResetOutputPin(BUILTIN_LED_GPIO_Port, BUILTIN_LED_Pin);
+  else
+    LL_GPIO_SetOutputPin(BUILTIN_LED_GPIO_Port, BUILTIN_LED_Pin);
+  pinOutputHigh = !pinOutputHigh;
+}
 /* USER CODE END 4 */
 
 /**
