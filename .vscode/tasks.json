@@ -10,7 +10,7 @@
                 "command": "wsl make"
             },
             "linux": {
-                "command": "make"
+                "command": "docker run -it --rm -v $(pwd):/usr/src -w /usr/src brunob45/arm-none-eabi-gcc apk add make && make"
             },
             "problemMatcher": [],
             "group": {
