@@ -39,6 +39,7 @@ C_SOURCES =  \
 Src/main.c \
 Src/gpio.c \
 Src/rtc.c \
+Src/tim.c \
 Src/usb_device.c \
 Src/usbd_conf.c \
 Src/usbd_desc.c \
