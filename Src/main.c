@@ -19,9 +19,10 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+#include "can.h"
+#include "crc.h"
 #include "rtc.h"
 #include "tim.h"
-#include "usb_device.h"
 #include "gpio.h"
 
 /* Private includes ----------------------------------------------------------*/
@@ -88,9 +89,10 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
-  MX_USB_DEVICE_Init();
   MX_RTC_Init();
   MX_TIM2_Init();
+  MX_CAN_Init();
+  MX_CRC_Init();
   /* USER CODE BEGIN 2 */
   HAL_TIM_OC_Start_IT(&htim2, TIM_CHANNEL_1);
   /* USER CODE END 2 */
@@ -144,9 +146,8 @@ void SystemClock_Config(void)
   {
     Error_Handler();
   }
-  PeriphClkInit.PeriphClockSelection = RCC_PERIPHCLK_RTC|RCC_PERIPHCLK_USB;
+  PeriphClkInit.PeriphClockSelection = RCC_PERIPHCLK_RTC;
   PeriphClkInit.RTCClockSelection = RCC_RTCCLKSOURCE_LSI;
-  PeriphClkInit.UsbClockSelection = RCC_USBCLKSOURCE_PLL_DIV1_5;
   if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInit) != HAL_OK)
   {
     Error_Handler();

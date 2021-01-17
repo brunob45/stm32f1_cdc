@@ -1,8 +1,8 @@
 /**
   ******************************************************************************
-  * File Name          : RTC.c
+  * File Name          : CRC.c
   * Description        : This file provides code for the configuration
-  *                      of the RTC instances.
+  *                      of the CRC instances.
   ******************************************************************************
   * @attention
   *
@@ -18,62 +18,55 @@
   */
 
 /* Includes ------------------------------------------------------------------*/
-#include "rtc.h"
+#include "crc.h"
 
 /* USER CODE BEGIN 0 */
 
 /* USER CODE END 0 */
 
-RTC_HandleTypeDef hrtc;
+CRC_HandleTypeDef hcrc;
 
-/* RTC init function */
-void MX_RTC_Init(void)
+/* CRC init function */
+void MX_CRC_Init(void)
 {
 
-  /** Initialize RTC Only
-  */
-  hrtc.Instance = RTC;
-  hrtc.Init.AsynchPrediv = RTC_AUTO_1_SECOND;
-  hrtc.Init.OutPut = RTC_OUTPUTSOURCE_ALARM;
-  if (HAL_RTC_Init(&hrtc) != HAL_OK)
+  hcrc.Instance = CRC;
+  if (HAL_CRC_Init(&hcrc) != HAL_OK)
   {
     Error_Handler();
   }
 
 }
 
-void HAL_RTC_MspInit(RTC_HandleTypeDef* rtcHandle)
+void HAL_CRC_MspInit(CRC_HandleTypeDef* crcHandle)
 {
 
-  if(rtcHandle->Instance==RTC)
+  if(crcHandle->Instance==CRC)
   {
-  /* USER CODE BEGIN RTC_MspInit 0 */
+  /* USER CODE BEGIN CRC_MspInit 0 */
 
-  /* USER CODE END RTC_MspInit 0 */
-    HAL_PWR_EnableBkUpAccess();
-    /* Enable BKP CLK enable for backup registers */
-    __HAL_RCC_BKP_CLK_ENABLE();
-    /* RTC clock enable */
-    __HAL_RCC_RTC_ENABLE();
-  /* USER CODE BEGIN RTC_MspInit 1 */
+  /* USER CODE END CRC_MspInit 0 */
+    /* CRC clock enable */
+    __HAL_RCC_CRC_CLK_ENABLE();
+  /* USER CODE BEGIN CRC_MspInit 1 */
 
-  /* USER CODE END RTC_MspInit 1 */
+  /* USER CODE END CRC_MspInit 1 */
   }
 }
 
-void HAL_RTC_MspDeInit(RTC_HandleTypeDef* rtcHandle)
+void HAL_CRC_MspDeInit(CRC_HandleTypeDef* crcHandle)
 {
 
-  if(rtcHandle->Instance==RTC)
+  if(crcHandle->Instance==CRC)
   {
-  /* USER CODE BEGIN RTC_MspDeInit 0 */
+  /* USER CODE BEGIN CRC_MspDeInit 0 */
 
-  /* USER CODE END RTC_MspDeInit 0 */
+  /* USER CODE END CRC_MspDeInit 0 */
     /* Peripheral clock disable */
-    __HAL_RCC_RTC_DISABLE();
-  /* USER CODE BEGIN RTC_MspDeInit 1 */
+    __HAL_RCC_CRC_CLK_DISABLE();
+  /* USER CODE BEGIN CRC_MspDeInit 1 */
 
-  /* USER CODE END RTC_MspDeInit 1 */
+  /* USER CODE END CRC_MspDeInit 1 */
   }
 }
 

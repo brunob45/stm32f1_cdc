@@ -1,8 +1,8 @@
 /**
   ******************************************************************************
-  * File Name          : RTC.h
+  * File Name          : CAN.h
   * Description        : This file provides code for the configuration
-  *                      of the RTC instances.
+  *                      of the CAN instances.
   ******************************************************************************
   * @attention
   *
@@ -17,8 +17,8 @@
   ******************************************************************************
   */
 /* Define to prevent recursive inclusion -------------------------------------*/
-#ifndef __rtc_H
-#define __rtc_H
+#ifndef __can_H
+#define __can_H
 #ifdef __cplusplus
  extern "C" {
 #endif
@@ -30,13 +30,13 @@
 
 /* USER CODE END Includes */
 
-extern RTC_HandleTypeDef hrtc;
+extern CAN_HandleTypeDef hcan;
 
 /* USER CODE BEGIN Private defines */
 
 /* USER CODE END Private defines */
 
-void MX_RTC_Init(void);
+void MX_CAN_Init(void);
 
 /* USER CODE BEGIN Prototypes */
 
@@ -45,7 +45,7 @@ void MX_RTC_Init(void);
 #ifdef __cplusplus
 }
 #endif
-#endif /*__ rtc_H */
+#endif /*__ can_H */
 
 /**
   * @}
