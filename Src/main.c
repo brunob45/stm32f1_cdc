@@ -46,7 +46,7 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
-
+volatile uint8_t spi_ready = 0;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -67,7 +67,10 @@ void SystemClock_Config(void);
 int main(void)
 {
   /* USER CODE BEGIN 1 */
-
+  uint8_t tx_buffer[8];
+  uint8_t rx_buffer[8];
+  uint16_t result = 0;
+  uint32_t time = 0;
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -92,7 +95,7 @@ int main(void)
   MX_RTC_Init();
   MX_SPI2_Init();
   /* USER CODE BEGIN 2 */
-
+  time = HAL_GetTick();
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -100,7 +103,30 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
-
+    if (HAL_GetTick() - time > 500)
+    {
+      time = HAL_GetTick();
+      tx_buffer[0] = 0x01;
+      tx_buffer[1] = 0xf0;
+      tx_buffer[2] = 0x00;
+      HAL_GPIO_WritePin(SPI2_CS_GPIO_Port, SPI2_CS_Pin, GPIO_PIN_RESET);
+      HAL_SPI_TransmitReceive_DMA(&hspi2, tx_buffer, rx_buffer, 3);
+    }
+    if (spi_ready != 0)
+    // if (hspi2.State == HAL_SPI_STATE_READY)
+    {
+      spi_ready = 0;
+      result = ((uint16_t)rx_buffer[1] & 0x03) << 8;
+      result |= rx_buffer[2];
+      if (result < 512)
+      {
+        HAL_GPIO_WritePin(BUILTIN_LED_GPIO_Port, BUILTIN_LED_Pin, GPIO_PIN_SET);
+      }
+      else
+      {
+        HAL_GPIO_WritePin(BUILTIN_LED_GPIO_Port, BUILTIN_LED_Pin, GPIO_PIN_RESET);
+      }
+    }
     /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */
@@ -153,7 +179,11 @@ void SystemClock_Config(void)
 }
 
 /* USER CODE BEGIN 4 */
-
+void HAL_SPI_TxRxCpltCallback(SPI_HandleTypeDef *hspi)
+{
+  HAL_GPIO_WritePin(SPI2_CS_GPIO_Port, SPI2_CS_Pin, GPIO_PIN_SET);
+  spi_ready = 1;
+}
 /* USER CODE END 4 */
 
 /**
